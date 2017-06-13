@@ -1,0 +1,15 @@
+(dp1
+S'chugging+alcohol'
+p2
+(lp3
+S'1.jpg'
+p4
+aS'2.jpg'
+p5
+aS'3.jpg'
+p6
+aS'4.jpg'
+p7
+aS'5.jpg'
+p8
+as.
