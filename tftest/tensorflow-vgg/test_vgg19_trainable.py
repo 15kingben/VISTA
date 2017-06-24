@@ -17,7 +17,7 @@ import sys
 OUTPUT_DIM = 2
 
 if len(sys.argv) > 1:
-    target = sys.argv
+    target = sys.argv[1]
 else:
     target = None
 
@@ -34,15 +34,20 @@ insta_base = '../../Scraping/instagram-scraper/instagram_scraper/instagram/'
 
 
 instap_folders = ["beerbong/", "collegeparty/", "frathouse/", "kegstand/", "shotgunbeer/", "beerfunnel/" ,  "flipcup/",  "kegger/" ,   "partypeople/"]
-flickrp_folders = ['beerbong/' , 'beerpong/', 'chuggingalcohol/', 'chuggingbeer/', 'drunkfrat/', 'fratpartydrunk/', 'kegstand/' , 'passedoutdrunk/', 'shotgunbeer/', 'underagedrinking/']
+flickrp_folders = ['beerbong/' , 'beerpong/', 'chuggingalcohol/', 'chuggingbeer/', 'drunkfrat/', 'fratpartydrunk/', 'kegstand/' , 'passedoutdrunk/', 'shotgunbeer/', 'underagedrinking/', 'overfittest/']
 
 if target != None:
+    nipf = []
+    nfpf = []
     for i in instap_folders:
-        if target not in i:
-            a.remove(i)
+        if target in i:
+            print(i)
+            nipf.append(i)
     for i in flickrp_folders:
-        if target not in i:
-            a.remove(i)
+        if target in i:
+            nfpf.append(i)
+    instap_folders = nipf
+    flickrp_folders = nfpf
 
 
 
@@ -73,14 +78,14 @@ for f in negative_example_folders:
 
 
 
-val_set = np.concatenate([all_positives[-1000:] , all_negatives[-1000:]])
-val_set = np.array([utils.load_image(i) for i in val_set])
-val_set_labels = np.concatenate( [ [ [1, 0] for i in range(1000)]  , [ [0 , 1] for i in range(1000)] ])
+# val_set = np.concatenate([all_positives[-1000:] , all_negatives[-1000:]])
+# val_set = np.array([utils.load_image(i) for i in val_set])
+# val_set_labels = np.concatenate( [ [ [1, 0] for i in range(1000)]  , [ [0 , 1] for i in range(1000)] ])
 
 
 
-all_positives = all_positives[:-1000]
-all_negatives = all_negatives[:-1000]
+# all_positives = all_positives[:-1000]
+# all_negatives = all_negatives[:-1000]
 
 
 
@@ -132,10 +137,9 @@ def load_batch(batch_size = 256):
 #     vgg.save_npy(sess, './vgg19-drinking-save.npy')
 
 
-batch_size = 10
+batch_size = 16
 training_iters = 1000000 # 100000
 display_step = 100
-
 
 
 images = tf.placeholder(tf.float32, [None, 224, 224, 3])
@@ -149,7 +153,7 @@ vgg.build(images, train_mode)
 
 
 
-learning_rate = .5
+learning_rate = .15
 
 # Define loss and Optimizer
 # cost = tf.reduce_sum((vgg.prob - true_out) ** 2)
@@ -184,6 +188,7 @@ with tf.device('/gpu:1'):
             print(labels, pred-labels)
             print(acc, cpred)
             print(pred)
+            print(vgg.prob)
 
             vgg.save_npy(sess, NPY_PATH )
 
