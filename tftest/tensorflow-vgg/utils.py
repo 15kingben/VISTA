@@ -3,22 +3,35 @@ import skimage.io
 import skimage.transform
 import skimage.color
 import numpy as np
-
+import random
 
 # synset = [l.strip() for l in open('synset.txt').readlines()]
 
 
 # returns image of shape [224, 224, 3]
 # [height, width, depth]
-def load_image(path):
+def load_image(path, augment=False):
     # load image
     img = skimage.io.imread(path)
     if len(img.shape) == 2:  # convert bw to rgb
         img = skimage.color.gray2rgb(img)
-
+    if img.shape[2] == 4:
+        img = img[:,:,:3]  #drop alpha channel (white bg)
 
     img = img / 255.0
     assert (0 <= img).all() and (img <= 1.0).all()
+
+
+    if augment:
+        rot = random.randrange(0,5)
+        img = skimage.transform.rotate(img, rot)
+
+        transx = random.rangrange(0,10)
+        transy = random.randrange(0,10)
+        trans = skimage.transform.SimilarityTransform(translation=(transx,transy))
+        img = warp(img, trans)
+
+
     # print "Original Image Shape: ", img.shape
     # we crop image from center
     short_edge = min(img.shape[:2])

@@ -1,0 +1,3 @@
+peerreview.jpg,0,-1.32293
+static_qr_code_without_logo.jpg,0,-3.61483
+text.jpg,0,-0.498223

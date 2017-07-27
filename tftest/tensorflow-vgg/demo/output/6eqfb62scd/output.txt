@@ -1,0 +1,31 @@
+IMAG0150_1 (1).jpg,0,-1.03692
+IMAG0150_1.jpg,0,-1.03692
+IMAG0191.jpg,1,1.3856
+image.png,0,-2.99548
+IMG_1093 (1).JPG,0,-5.11391
+IMG_1093.JPG,0,-5.11391
+IMG_1094.JPG,0,-4.25784
+IMG_1687 (1).JPG,0,-2.85175
+IMG_1687.JPG,0,-1.6827
+IMG_1688.JPG,0,-5.29665
+IMG_1689.JPG,0,-1.82181
+IMG_1693.JPG,0,-1.47453
+IMG_1694 (1).JPG,0,-0.870578
+IMG_1694.JPG,0,-0.870578
+IMG_1695.JPG,0,-1.62605
+IMG_1698.JPG,0,-1.33115
+IMG_1699.JPG,0,-0.980175
+IMG_9017.JPG,0,-3.91782
+LenovoWallPaper.jpg,0,-1.78775
+logo.png,0,-1.60557
+maymay.png,1,0.561801
+maymay_genji.png,0,-2.36233
+myneighbortotoro_wallpapers_13.jpg,0,-2.45461
+peerreview.jpg,0,-1.06354
+static_qr_code_without_logo.jpg,0,-2.70768
+text.jpg,0,-1.01868
+thought-bubble-305053_960_720.png,0,-1.94103
+vm_contents.JPG,0,-5.88645
+Which Community on StackOverflow is the most Toxic- (1).png,0,-2.51197
+Which Community on StackOverflow is the most Toxic- (2).png,1,0.137116
+Which Community on StackOverflow is the most Toxic-.png,0,-4.23325

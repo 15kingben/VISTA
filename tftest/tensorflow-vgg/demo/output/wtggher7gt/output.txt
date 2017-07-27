@@ -1,0 +1,11 @@
+maymay.png,1,0.561802
+maymay_genji.png,0,-2.36233
+myneighbortotoro_wallpapers_13.jpg,0,-2.45461
+peerreview.jpg,0,-1.06354
+static_qr_code_without_logo.jpg,0,-2.70768
+text.jpg,0,-1.01868
+thought-bubble-305053_960_720.png,0,-1.94103
+vm_contents.JPG,0,-5.88645
+Which Community on StackOverflow is the most Toxic- (1).png,0,-2.51197
+Which Community on StackOverflow is the most Toxic- (2).png,1,0.137116
+Which Community on StackOverflow is the most Toxic-.png,0,-4.23325

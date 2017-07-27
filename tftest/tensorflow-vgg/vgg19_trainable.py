@@ -11,7 +11,7 @@ class Vgg19:
     A trainable version VGG19.
     """
 
-    def __init__(self, vgg19_npy_path=None, trainable=True, dropout=0.5, output_path="./vgg19-save.npy"):
+    def __init__(self, vgg19_npy_path=None, trainable=True, dropout=0.5, output_path="./vgg19-save.npy", output_dim=10):
         if vgg19_npy_path is not None:
             print(vgg19_npy_path)
             #self.data_dict = np.load(vgg19_npy_path, encoding='latin1').item()
@@ -22,6 +22,7 @@ class Vgg19:
         self.var_dict = {}
         self.trainable = trainable
         self.dropout = dropout
+        self.output_dim = output_dim
         # self.NPY_PATH = "./vgg19-save.npy"
         self.NPY_PATH = output_path
 
@@ -88,7 +89,10 @@ class Vgg19:
         elif self.trainable:
             self.relu6 = tf.nn.dropout(self.relu6, self.dropout)
 
-        self.fc7 = self.fc_layer(self.relu6, 4096, 4096, "fc7-custom")
+        SMALLER_FC = 1000
+
+
+        self.fc7 = self.fc_layer(self.relu6, 4096, SMALLER_FC, "fc7-custom")
         self.relu7 = tf.nn.relu(self.fc7)
         if train_mode is not None:
             self.relu7 = tf.cond(train_mode, lambda: tf.nn.dropout(self.relu7, self.dropout), lambda: self.relu7)
@@ -96,12 +100,15 @@ class Vgg19:
             self.relu7 = tf.nn.dropout(self.relu7, self.dropout)
 
 #        self.fc8 = self.fc_layer(self.relu7, 4096, 1000, "fc8")
-        self.fc8 = self.fc_layer(self.relu7, 4096, 2, "fc8-custom") # for binary classification problem
+        self.fc8 = self.fc_layer(self.relu7, SMALLER_FC, self.output_dim, "fc8-custom") # for binary classification problem
 
 
-        self.prob = tf.nn.softmax(self.fc8, name="prob")
+        # self.prob = tf.nn.softmax(self.fc8, name="prob")
+        self.prob = self.fc8
 
         self.data_dict = None
+
+
 
     def avg_pool(self, bottom, name):
         return tf.nn.avg_pool(bottom, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding='SAME', name=name)
@@ -112,6 +119,22 @@ class Vgg19:
     def conv_layer(self, bottom, in_channels, out_channels, name):
         with tf.variable_scope(name):
             filt, conv_biases = self.get_conv_var(3, in_channels, out_channels, name)
+
+            # if name == 'conv1_1':
+            #     with tf.variable_scope('visualization'):
+            #         kernel = filt
+            #         # scale weights to [0 1], type is still float
+            #         x_min = tf.reduce_min(kernel)
+            #         x_max = tf.reduce_max(kernel)
+            #         kernel_0_to_1 = (kernel - x_min) / (x_max - x_min)
+
+            #         # to tf.image_summary format [batch_size, height, width, channels]
+            #         kernel_transposed = tf.transpose (kernel_0_to_1, [3, 0, 1, 2])
+
+            #         print(kernel_transposed.get_shape())
+
+            #         # this will display random 3 filters from the 64 in conv1
+            #         tf.image_summary('conv1/filters', kernel_transposed, max_images=3)
 
             conv = tf.nn.conv2d(bottom, filt, [1, 1, 1, 1], padding='SAME')
             bias = tf.nn.bias_add(conv, conv_biases)
@@ -133,7 +156,7 @@ class Vgg19:
         filters = self.get_var(initial_value, name, 0, name + "_filters")
 
         initial_value = tf.truncated_normal([out_channels], .0, .001)
-        biases = self.get_var(initial_value, name, 1, name + "_biases")
+        biases = self.get_var(initial_value, name, 1, name + "_biases", dotrain=False)
 
         return filters, biases
 
@@ -146,13 +169,16 @@ class Vgg19:
 
         return weights, biases
 
-    def get_var(self, initial_value, name, idx, var_name):
+    def get_var(self, initial_value, name, idx, var_name, dotrain=True):
         if self.data_dict is not None and name in self.data_dict:
             value = self.data_dict[name][idx]
         else:
             value = initial_value
+            print(value)
+            print(initial_value)
 
-        if self.trainable:
+
+        if self.trainable and dotrain:
             var = tf.Variable(value, name=var_name)
         else:
             var = tf.constant(value, dtype=tf.float32, name=var_name)

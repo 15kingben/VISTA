@@ -1,0 +1,2 @@
+peerreview.jpg,1,2.74715
+static_qr_code_without_logo.jpg,1,5.60886
